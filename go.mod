@@ -1,3 +1,3 @@
-module github.com/whalebone7/goretire
+module github.com/whalebone7/gretire
 
 go 1.20
