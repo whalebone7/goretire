@@ -4,14 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
-        "net/http"
 )
 
 func main() {
-
 	urls, err := readURLsFromInput()
 	if err != nil {
 		fmt.Println("Error reading URLs:", err)
@@ -51,18 +50,40 @@ func main() {
 		cmd := exec.Command("retire", "--path", "javascript.js")
 		output, err := cmd.CombinedOutput()
 		if err != nil {
-			fmt.Println("Error running Retire.js:", err)
+			fmt.Printf("Error running Retire.js for %s: %v\n", endpointURL, err)
+			fmt.Println("Output:", string(output))
 			continue
 		}
 
-		fmt.Println("Retire.js Scan Results for", endpointURL + ":")
-		fmt.Println(string(output))
+		fmt.Printf("Retire.js Scan Results for %s:\n", endpointURL)
+
+		// Extract CVEs from the output
+		cves := extractCVEs(string(output))
+		if len(cves) > 0 {
+			fmt.Println("CVEs found:")
+			for _, cve := range cves {
+				fmt.Println(cve)
+			}
+		} else {
+			fmt.Println("No CVEs found.")
+		}
 
 		err = os.Remove("javascript.js")
 		if err != nil {
 			fmt.Println("Error deleting JavaScript file:", err)
 		}
 	}
+}
+
+func extractCVEs(output string) []string {
+	var cves []string
+	lines := strings.Split(output, "\n")
+	for _, line := range lines {
+		if strings.HasPrefix(line, "[*] ") {
+			cves = append(cves, line[4:])
+		}
+	}
+	return cves
 }
 
 func readURLsFromInput() ([]string, error) {
