@@ -7,5 +7,5 @@ cat javascriptUrls.txt | retire
 Or 
 
 ```bash
-echo "https://example.com/assets/tracking.js | gretire
+echo "https://example.com/assets/tracking.js" | gretire
 ```
