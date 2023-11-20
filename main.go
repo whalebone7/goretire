@@ -57,7 +57,7 @@ func main() {
 
 		fmt.Printf("Retire.js Scan Results for %s:\n", endpointURL)
 
-		// Extract CVEs from the output
+	
 		cves := extractCVEs(string(output))
 		if len(cves) > 0 {
 			fmt.Println("CVEs found:")
