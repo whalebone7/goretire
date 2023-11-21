@@ -13,7 +13,7 @@ go install -v github.com/whalebone7/gretire@latest
 This tool allows you to scan multiple javascript endpoints by embedding retire.js in go lang:
 
 ```bash
-cat javascriptUrls.txt | retire
+cat javascriptUrls.txt | gretire
 ```
 Or 
 
